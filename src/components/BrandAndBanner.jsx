@@ -20,22 +20,24 @@ export default function BrandAndBanner() {
   ];
 
   return (
-    <div className="bg-white px-4 py-4 space-y-4">
+    <div className="bg-white px-4 py-4 space-y-4 overflow-hidden max-w-full">
       {/* Brand Carousel */}
-      <div className="flex overflow-x-auto gap-3 px-2 py-2">
+      <div className="flex justify center overflow-x-auto gap-3 px-2 py-2">
         {brandLogos.map((brand, idx) => (
           <div
             key={idx}
-            className="flex-shrink-0 w-15 h-15 rounded-full border border-blue-500 bg-white flex items-center justify-center overflow-hidden"
+            className="flex-shrink-0 rounded-full border border-blue-500 bg-white flex items-center justify-center overflow-hidden"
+            style={{ width: "clamp(48px, 14vw, 72px)", height: "clamp(48px, 14vw, 72px)" }}
           >
             <img
               src={brand.src}
               alt={brand.name}
-              className="w-10 h-10 object-contain"
+              className="w-[70%] h-[70%] object-contain"
             />
           </div>
         ))}
       </div>
+
 
       {/* Catalog Banners */}
       <div className="grid grid-cols-2 gap-3">
