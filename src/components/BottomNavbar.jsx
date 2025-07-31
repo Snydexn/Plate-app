@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 export default function BottomNavbar() {
   return (
@@ -10,29 +11,20 @@ export default function BottomNavbar() {
             %
           </div>
           <div>
-            <p className="text-sm leading-none">
-              Diskon 30% untuk pengguna baru
-            </p>
-            <p className="text-xs text-gray-200 -mt-0.5">
-              Klaim sekarang juga
-            </p>
+            <p className="text-sm leading-none">Diskon 30% untuk pengguna baru</p>
+            <p className="text-xs text-gray-200 -mt-0.5">Klaim sekarang juga</p>
           </div>
         </div>
       </div>
 
       {/* Navigation Items */}
       <div className="flex justify-between items-center px-4 pt-3 pb-2 bg-white">
-        {[
-          { name: "Home", icon: "/assets/nav/home.png" },
-          { name: "Category", icon: "/assets/nav/category.png" },
-          { name: "Design Your Own Plate", icon: "/assets/nav/design.png" },
-          { name: "Cart", icon: "/assets/nav/cart.png" },
-          { name: "Account", icon: "/assets/nav/account.png" },
-        ].map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center text-[11px] font-medium text-black text-center w-[20%]"
-          >
+        {[{ name: "Home", icon: "/assets/nav/home.png", link: "/" }, 
+          { name: "Category", icon: "/assets/nav/category.png", link: "/category" },
+          { name: "Design Your Own Plate", icon: "/assets/nav/design.png", link: "/design" },
+          { name: "Cart", icon: "/assets/nav/cart.png", link: "/cart" },
+          { name: "Account", icon: "/assets/nav/account.png", link: "/account" }].map((item, index) => (
+          <Link key={index} to={item.link} className="flex flex-col items-center text-[11px] font-medium text-black text-center w-[20%]">
             <img
               src={item.icon}
               alt={item.name}
@@ -48,7 +40,7 @@ export default function BottomNavbar() {
                 item.name
               )}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
