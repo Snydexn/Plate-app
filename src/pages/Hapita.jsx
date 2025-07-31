@@ -6,7 +6,6 @@ import BottomNavbar from '../components/BottomNavbar';
 const Hapita = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // Data produk
   const products = [
     { id: 1, name: 'Alicia Dinner Plate 27cm', price: 'Rp 235.000', image: '/assets/hapita/1.png', category: 'Alicia' },
     { id: 2, name: 'Irish Green Pasta Bowl', price: 'Rp 235.000', image: '/assets/hapita/2.png', category: 'Irish' },
@@ -26,12 +25,10 @@ const Hapita = () => {
     { id: 16, name: 'Graphite Cappuccino Cup & Saucer', price: 'Rp 235.000', image: '/assets/hapita/16.png', category: '' },
   ];
 
-  // Kategori untuk sidebar
   const categories = [
     'Alicia', 'Clara', 'Serena', 'Dark Gobi', 'Fusion Grey', 'Pedra Rocha', 'Rustic', 'Atelier', 'Irish', 'Hikari',
   ];
 
-  // Filter produk berdasarkan kategori yang dipilih
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
     : products;
@@ -62,11 +59,11 @@ const Hapita = () => {
 
         {/* Produk */}
         <div className="w-3/4">
-          <div className="relative mb-2">
+          <div className="relative mb-4">
             <img
-              src="/assets/hapita/banner.png" // Replace with your banner image path
+              src="/assets/hapita/banner.png"
               alt="Banner"
-              className="w-full h-[100px] object-cover rounded-lg" // Ensures the image has rounded corners
+              className="w-full h-[100px] object-cover rounded-lg"
             />
           </div>
           <h2 className="text-xl mb-2">Semua Hapita</h2>
@@ -74,29 +71,22 @@ const Hapita = () => {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm relative"
-                style={{
-                  width: '120px', // Smaller width for the card
-                  height: '180px', // Adjust height to maintain proportions
-                  margin: '0 auto',
-                }}
+                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
               >
-                {/* Product Image */}
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-[90px] object-cover bg-white" // Adjust image to fit smaller cards
-                />
+                {/* Gambar */}
+                <div className="aspect-[4/3] w-full bg-white overflow-hidden rounded-t-2xl">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-                {/* Product Details */}
-                <div className="bg-[#094C78] text-white p-2 rounded-b-2xl min-h-[60px] relative">
-                  <div className="text-xs pr-8">
-                    <p className="text-[10px]">{product.name}</p> {/* Reduced font size for name */}
-                    <p className="text-[#FDCD25] font-semibold text-[12px] mt-1">{product.price}</p> {/* Reduced font size for price */}
-                  </div>
-
-                  {/* Add to Cart Button */}
-                  <button className="absolute bottom-3 right-3 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
+                {/* Detail Produk */}
+                <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
+                  <p className="text-[10px] leading-tight">{product.name}</p>
+                  <p className="text-[#FDCD25] font-semibold text-[12px] mt-1">{product.price}</p>
+                  <button className="absolute bottom-2 right-2 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
                     +
                   </button>
                 </div>

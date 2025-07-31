@@ -1,150 +1,139 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // For navigating to the home page
-import BottomNavbar from "../components/BottomNavbar";
+import TopBar from "../components/TopBar";
+import {
+  getWishlist,
+  saveWishlist,
+  removeWishlistItem,
+} from "../utils/wishlistStorage";
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [checkedItems, setCheckedItems] = useState({});
+  const [quantities, setQuantities] = useState({});
 
-  // Fetch wishlist from localStorage when component mounts
   useEffect(() => {
-    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const savedWishlist = getWishlist();
     setWishlist(savedWishlist);
+
+    const initialQuantities = {};
+    const initialChecked = {};
+    savedWishlist.forEach(item => {
+      initialQuantities[item.id] = 1;
+      initialChecked[item.id] = false;
+    });
+    setQuantities(initialQuantities);
+    setCheckedItems(initialChecked);
   }, []);
 
-  // Function to handle removing an item from the wishlist
-  const removeFromWishlist = (productId) => {
-    const updatedWishlist = wishlist.filter(item => item.id !== productId);
+  const toggleChecked = (id) => {
+    setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const removeItem = (id) => {
+    const updatedWishlist = removeWishlistItem(id);
+    const updatedChecked = { ...checkedItems };
+    const updatedQuantities = { ...quantities };
+
+    delete updatedChecked[id];
+    delete updatedQuantities[id];
+
     setWishlist(updatedWishlist);
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); // Save updated wishlist
+    setCheckedItems(updatedChecked);
+    setQuantities(updatedQuantities);
   };
 
-  // Function to handle item selection
-  const handleSelectItem = (productId) => {
-    const updatedSelectedItems = selectedItems.includes(productId)
-      ? selectedItems.filter(id => id !== productId) // Deselect
-      : [...selectedItems, productId]; // Select
-    setSelectedItems(updatedSelectedItems);
-    calculateTotal(updatedSelectedItems); // Recalculate total when selection changes
+  const handleQuantity = (id, delta) => {
+    const newQty = (quantities[id] || 1) + delta;
+    if (newQty <= 0) {
+      removeItem(id);
+    } else {
+      setQuantities(prev => ({ ...prev, [id]: newQty }));
+    }
   };
 
-  // Function to calculate total price based on selected items
-  const calculateTotal = (selectedItems) => {
-    const selectedProducts = wishlist.filter(item => selectedItems.includes(item.id));
-    const total = selectedProducts.reduce((total, item) => {
-      // Remove non-numeric characters and parse the price as a number
-      const price = parseInt(item.price.replace(/[^\d]/g, ""), 10);
-      
-      if (!isNaN(price)) {
-        total += price * item.quantity; // Multiply by quantity
+  const getTotal = () => {
+    return wishlist.reduce((total, item) => {
+      if (checkedItems[item.id]) {
+        const qty = quantities[item.id] || 1;
+        const price = parseInt(item.price.replace(/[^\d]/g, ""));
+        return total + qty * price;
       }
       return total;
     }, 0);
-    setTotalPrice(total);
   };
 
-  // Function to handle quantity change
-  const handleQuantityChange = (productId, operation) => {
-    const updatedWishlist = wishlist.map(item => {
-      if (item.id === productId) {
-        if (operation === "increase") {
-          item.quantity += 1;
-        } else if (operation === "decrease" && item.quantity > 1) {
-          item.quantity -= 1;
-        }
-      }
-      return item;
+  const handleSelectAll = (checked) => {
+    const newChecked = {};
+    wishlist.forEach(item => {
+      newChecked[item.id] = checked;
     });
-    setWishlist(updatedWishlist);
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); // Save updated wishlist
-    calculateTotal(selectedItems); // Recalculate total after quantity change
+    setCheckedItems(newChecked);
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4">
-      <h1 className="text-2xl font-semibold text-center text-[#094C78] mb-6">
-        Your Wishlist
-      </h1>
-
-      {/* Check if wishlist is empty */}
-      <div className="px-4 py-8">
+    <div className= "min-h-screen flex flex-col justify-between">
+      <TopBar />
+      {/* Wishlist Content */}
+      <div className="p-4 flex-1 overflow-y-auto">
+        <h2 className="font-semibold text-lg mb-4">Pilihanmu</h2>
         {wishlist.length === 0 ? (
-          <div className="text-center text-lg text-gray-600">
-            <p>Your wishlist is empty.</p>
-            <Link to="/" className="text-blue-500 mt-4 inline-block">
-              Back to Home
-            </Link>
-          </div>
+          <p className="text-center text-gray-600 text-sm italic">Tidak ada wishlist</p>
         ) : (
-          <>
-            <div className="space-y-4">
-              {wishlist.map((item) => (
-                <div key={item.id} className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
-                  {/* Checkbox for selection */}
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.includes(item.id)}
-                    onChange={() => handleSelectItem(item.id)}
-                    className="mr-2"
-                  />
-
-                  {/* Product Image */}
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover mr-4"
-                  />
-
-                  <div className="flex-1">
-                    {/* Product Name */}
-                    <p className="font-medium text-sm">{item.name}</p>
-
-                    {/* Product Price */}
-                    <p className="text-[#FDCD25] text-base font-semibold mt-1">
-                      {item.price}
-                    </p>
-                  </div>
-
-                  {/* Quantity control */}
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleQuantityChange(item.id, "decrease")}
-                      className="bg-gray-200 text-black p-1 rounded-sm"
-                    >
-                      -
-                    </button>
-                    <p className="font-medium text-sm">{item.quantity}</p>
-                    <button
-                      onClick={() => handleQuantityChange(item.id, "increase")}
-                      className="bg-gray-200 text-black p-1 rounded-sm"
-                    >
-                      +
-                    </button>
-                  </div>
+          wishlist.map((item) => (
+            <div key={item.id} className="flex items-center justify-between px-3 py-2 bg-white rounded-lg shadow-sm mb-3">
+              <div className="flex items-center gap-3">
+                <input type="checkbox" checked={checkedItems[item.id] || false} onChange={() => toggleChecked(item.id)} className="w-5 h-5 accent-black" />
+                <img src={item.image} alt={item.name} className="w-16 h-16 object-contain rounded-xl" />
+                <div>
+                  <p className="text-sm font-medium text-black">{item.name}</p>
+                  <p className="text-sm font-semibold text-[#F5C000]">{item.price}</p>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            {/* Total Price Section */}
-            <div className="mt-6 flex justify-between items-center">
-              <p className="text-lg font-semibold">Total Price:</p>
-              <p className="text-lg font-semibold text-[#FDCD25]">
-                Rp {totalPrice.toLocaleString("id-ID")}
-              </p>
+              <div className="flex items-center gap-2 bg-[#E3E3E3] px-2 py-1 rounded-full">
+                <button className="text-lg font-semibold px-2" onClick={() => handleQuantity(item.id, -1)}>−</button>
+                <span className="text-sm">{quantities[item.id]}</span>
+                <button className="text-lg font-semibold px-2" onClick={() => handleQuantity(item.id, 1)}>+</button>
+              </div>
             </div>
+          ))
+        )}
+      </div>
 
-            <div className="mt-4 text-center">
-              <button
-                className="bg-blue-600 text-white px-8 py-2 rounded-full text-sm"
-                onClick={() => alert("Proceed to checkout")}
-              >
+      {/* Footer */}
+      {wishlist.length > 0 && (
+        <div className="bg-white rounded-t-xl shadow-md">
+          <div className="bg-[#074A77] text-white px-4 py-2 rounded-t-xl flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🎫</span>
+              <span className="text-sm font-medium">Voucher</span>
+            </div>
+            <span className="text-sm text-gray-300">Gunakan/masukkan code &gt;</span>
+          </div>
+
+          <div className="flex justify-between items-center px-4 py-3">
+            <label className="flex items-center gap-2 text-black text-sm">
+              <input
+                type="checkbox"
+                onChange={(e) => handleSelectAll(e.target.checked)}
+                checked={
+                  wishlist.length > 0 &&
+                  wishlist.every((item) => checkedItems[item.id])
+                }
+              />
+              Semua
+            </label>
+            <div className="flex items-center gap-3">
+              <span className="text-[#074A77] font-bold text-sm">
+                Rp {getTotal().toLocaleString("id-ID")}
+              </span>
+              <button className="bg-[#FDCD25] text-white font-bold text-sm px-4 py-2 rounded">
                 Checkout
               </button>
             </div>
-          </>
-        )}
-      </div>
-    </main>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
