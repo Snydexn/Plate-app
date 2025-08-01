@@ -44,7 +44,7 @@ const WishlistPage = () => {
       updatedWishlist[index].quantity = newQuantity;
       setWishlist(updatedWishlist);
       calculateTotal(updatedWishlist);
-      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); // Update localStorage
+      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist)); 
     }
   };
 
@@ -63,8 +63,8 @@ const WishlistPage = () => {
         {/* Search Box */}
         <div className="flex items-center gap-3 mt-2">
           <div className="flex flex-1 items-center bg-white rounded-full px-4 py-1 shadow-sm">
-            <img src="/assets/Logo BKH.png" alt="Logo" className="h-9 w-9 mr-2 object-contain" />
-            <input type="text" placeholder="Search" className="flex-1 text-sm text-black focus:outline-none" />
+            <img src="/assets/Logo BKH.png" alt="Logo" className="h-9 w-9 mr-2 object-contain" onClick={() => navigate("/homepage")}/>
+            <input type="text" placeholder="Search" className="flex-1 text-sm text-black focus:outline-none" onClick={() => navigate("/search")} />
             <FaSearch className="text-gray-500 text-xl ml-2" />
           </div>
           {/* Heart Icon for Wishlist */}

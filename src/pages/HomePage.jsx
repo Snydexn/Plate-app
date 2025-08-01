@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
 
 export default function HomePage() {
   const [wishlist, setWishlist] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("wishlist")) || [];
@@ -92,24 +94,25 @@ export default function HomePage() {
     },
   ];
 
-  // Toggle wishlist (add or remove)
+  // Toggle wishlist
   const toggleWishlist = (product) => {
     const existing = JSON.parse(localStorage.getItem("wishlist")) || [];
     const isExists = existing.some((item) => item.id === product.id);
-
-    let updatedWishlist;
-    if (isExists) {
-      updatedWishlist = existing.filter((item) => item.id !== product.id);
-    } else {
-      updatedWishlist = [...existing, product];
-    }
-
+    const updatedWishlist = isExists
+      ? existing.filter((item) => item.id !== product.id)
+      : [...existing, product];
     setWishlist(updatedWishlist);
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
 
   const isInWishlist = (productId) => {
     return wishlist.some((item) => item.id === productId);
+  };
+
+  const handleClick = (productId) => {
+    if (productId === 1) {
+      navigate("/produk/alicia");
+    }
   };
 
   return (
@@ -168,15 +171,19 @@ export default function HomePage() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm relative"
+              onClick={() => handleClick(product.id)}
+              className="cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm relative"
               style={{ maxWidth: "200px", margin: "0 auto" }}
             >
               {/* Icon Wishlist */}
               <div
-                className={`absolute top-2 right-2 text-lg cursor-pointer ${
+                className={`absolute top-2 right-2 text-lg cursor-pointer z-10 ${
                   isInWishlist(product.id) ? "text-red-500" : "text-blue-400"
                 }`}
-                onClick={() => toggleWishlist(product)}
+                onClick={(e) => {
+                  e.stopPropagation(); // mencegah navigate
+                  toggleWishlist(product);
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -185,9 +192,9 @@ export default function HomePage() {
                   className="w-5 h-5"
                 >
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                  2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 
-                  3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 
-                  3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                      2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 
+                      3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 
+                      3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
               </div>
 
@@ -206,7 +213,6 @@ export default function HomePage() {
                     {product.price}
                   </p>
                 </div>
-
                 <button className="absolute bottom-3 right-3 bg-yellow-300 text-[#01497c] w-7 h-7 rounded-full flex items-center justify-center text-lg font-bold leading-none">
                   +
                 </button>
