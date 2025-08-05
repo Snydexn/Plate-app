@@ -86,7 +86,7 @@ const Lumerpa = () => {
                 {/* Detail */}
                 <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
                   <p className="text-[10px] leading-tight">{product.name}</p>
-                  <p className="text-[#FDCD25] font-semibold text-[12px] mt-1">{product.price}</p>
+                  <p className="text-[#FDCD25] text-[12px] mt-1">{product.price}</p>
                   <button className="absolute bottom-2 right-2 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
                     +
                   </button>

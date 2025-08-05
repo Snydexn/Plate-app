@@ -6,6 +6,8 @@ import Lumerpa from './pages/Lumerpa';
 import WishlistPage from './pages/WishlistPage';
 import Hapita from './pages/Hapita';
 import ProductDetail from './pages/ProductDetail';
+import CheckoutPage from './pages/CheckoutPage';
+import PaymentGatewayPage from './pages/PaymentGatewayPage';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,6 +22,8 @@ function App() {
         <Route path="/hapita" element={<Hapita />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/produk/alicia" element={<ProductDetail />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/payment-gateway" element={<PaymentGatewayPage />} />
       </Routes>
     </BrowserRouter>
   )

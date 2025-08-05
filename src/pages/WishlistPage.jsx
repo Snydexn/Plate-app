@@ -5,11 +5,14 @@ import {
   saveWishlist,
   removeWishlistItem,
 } from "../utils/wishlistStorage";
+import { useNavigate } from "react-router-dom";
+
 
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
   const [quantities, setQuantities] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedWishlist = getWishlist();
@@ -70,6 +73,20 @@ export default function WishlistPage() {
     setCheckedItems(newChecked);
   };
 
+  const handleCheckout = () => {
+  const selectedItems = wishlist
+    .filter((item) => checkedItems[item.id])
+    .map((item) => ({
+      ...item,
+      quantity: quantities[item.id] || 1,
+      isChecked: true,
+    }));
+
+  localStorage.setItem("checkout", JSON.stringify(selectedItems));
+  navigate("/checkout");
+};
+
+
   return (
     <div className="min-h-screen flex flex-col">
   <TopBar />
@@ -129,9 +146,14 @@ export default function WishlistPage() {
           <span className="text-[#074A77] font-bold text-sm">
             Rp {getTotal().toLocaleString("id-ID")}
           </span>
-          <button className="bg-[#FDCD25] text-white font-bold text-sm px-4 py-2 rounded">
+          <button
+            onClick={handleCheckout}
+            disabled={wishlist.every((item) => !checkedItems[item.id])}
+            className="bg-[#FDCD25] text-white font-bold text-sm px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Checkout
           </button>
+
         </div>
       </div>
     </div>
