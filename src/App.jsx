@@ -8,6 +8,8 @@ import Hapita from './pages/Hapita';
 import ProductDetail from './pages/ProductDetail';
 import CheckoutPage from './pages/CheckoutPage';
 import PaymentGatewayPage from './pages/PaymentGatewayPage';
+import TrackOrder from './pages/TrackOrder';
+import ProductDetailArias from './pages/ProductDetailArias';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -22,8 +24,11 @@ function App() {
         <Route path="/hapita" element={<Hapita />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/produk/alicia" element={<ProductDetail />} />
+        <Route path="/produk/arias" element={<ProductDetailArias />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/payment-gateway" element={<PaymentGatewayPage />} />
+        <Route path="/track-order" element={<TrackOrder />} />
+
       </Routes>
     </BrowserRouter>
   )

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import TopBar from "../components/TopBar";
 import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
+import { useNavigate } from "react-router-dom";
 
 const Lumerpa = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
   const products = [
     { id: 1, name: "Alice Cappucino Cup Set", price: "Rp 235.000", image: "/assets/lumerpa/1.png", category: "Alice" },
@@ -68,10 +70,15 @@ const Lumerpa = () => {
           </div>
           <h2 className="text-l mb-2">Semua Lumerpa</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, index) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
+                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col cursor-pointer"
+                onClick={() => {
+                  if (index === 1) {
+                    navigate("/produk/arias");
+                  }
+                }}
               >
                 {/* Image */}
                 <div className="aspect-[4/3] w-full bg-white overflow-hidden rounded-t-2xl">
@@ -81,7 +88,6 @@ const Lumerpa = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-
 
                 {/* Detail */}
                 <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
