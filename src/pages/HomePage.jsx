@@ -6,11 +6,13 @@ import BottomNavbar from "../components/BottomNavbar";
 
 export default function HomePage() {
   const [wishlist, setWishlist] = useState([]);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("wishlist")) || [];
     setWishlist(saved);
+    setShowLoginModal(true);
   }, []);
 
   const bannerCatalogs = [
@@ -115,54 +117,10 @@ export default function HomePage() {
     }
   };
 
-  return (
-    <main className="min-h-screen text-black pb-36">
+    return (
+    <main className="min-h-screen text-black pb-36 relative">
       <TopBar />
       <BrandAndBanner />
-
-      {/* Catalog Banners */}
-      <div className="grid grid-cols-2 gap-3 p-2">
-        {bannerCatalogs.map((banner, idx) => (
-          <img
-            key={idx}
-            src={banner.src}
-            alt={banner.alt}
-            className="rounded-xl w-full h-auto object-cover"
-          />
-        ))}
-      </div>
-
-      {/* Promo Banners */}
-      <div className="grid grid-cols-2 gap-3 p-2">
-        {bannerPromos.map((banner, idx) => (
-          <img
-            key={idx}
-            src={banner.src}
-            alt={banner.alt}
-            className="rounded-xl w-full h-auto object-cover"
-          />
-        ))}
-      </div>
-
-      {/* Inspirasi Untukmu */}
-      <section className="pt-4 pb-6 text-black">
-        <h2 className="px-4 font-semibold text-sm mb-3">Inspirasi Untukmu</h2>
-        <div className="flex gap-2 px-4 justify-between">
-          {inspirations.map((src, idx) => (
-            <div
-              key={idx}
-              className="rounded-xl overflow-hidden bg-white"
-              style={{ width: "18%", aspectRatio: "3 / 4" }}
-            >
-              <img
-                src={src}
-                alt={`inspirasi-${idx}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Produk Pilihan */}
       <section className="px-4 pb-8 text-black">
@@ -175,13 +133,12 @@ export default function HomePage() {
               className="cursor-pointer bg-white rounded-2xl overflow-hidden shadow-sm relative"
               style={{ maxWidth: "200px", margin: "0 auto" }}
             >
-              {/* Icon Wishlist */}
               <div
                 className={`absolute top-2 right-2 text-lg cursor-pointer z-10 ${
                   isInWishlist(product.id) ? "text-red-500" : "text-blue-400"
                 }`}
                 onClick={(e) => {
-                  e.stopPropagation(); // mencegah navigate
+                  e.stopPropagation();
                   toggleWishlist(product);
                 }}
               >
@@ -192,20 +149,16 @@ export default function HomePage() {
                   className="w-5 h-5"
                 >
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                      2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 
-                      3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 
-                      3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 
+                    3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 
+                    3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
               </div>
-
-              {/* Product Image */}
               <img
                 src={product.image}
                 alt={product.name}
                 className="w-full h-[140px] object-contain bg-white"
               />
-
-              {/* Product Detail */}
               <div className="bg-[#094C78] text-white p-3 rounded-b-2xl min-h-[80px] relative">
                 <div className="text-xs pr-8">
                   <p>{product.name}</p>
@@ -223,6 +176,55 @@ export default function HomePage() {
       </section>
 
       <BottomNavbar />
+
+      {/* MODAL LOGIN */}
+      {showLoginModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="bg-gradient-to-b from-[#1076BB] to-white rounded-3xl w-[90%] max-w-md text-center text-white relative px-6 py-8">
+      <button
+        className="absolute top-2 right-4 bg-black text-white px-2 py-1 rounded-full text-sm"
+        onClick={() => setShowLoginModal(false)}
+      >
+        X
+      </button>
+      <h2 className="text-3xl font-bold mb-6">Masuk</h2>
+      <form className="space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full border-b border-white bg-transparent py-2 px-1 placeholder-white text-white focus:outline-none"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full border-b border-white bg-transparent py-2 px-1 placeholder-white text-white focus:outline-none"
+        />
+        <div className="flex justify-between items-center text-xs mt-2 mb-4 text-white">
+          <label className="flex items-center gap-1">
+            <input type="checkbox" className="accent-white" />
+            Remember me
+          </label>
+          <span className="underline">Forget Password?</span>
+        </div>
+
+        {/* ✅ TOMBOL LOGIN */}
+        <button
+          type="button"
+          onClick={() => setShowLoginModal(false)}
+          className="bg-[#FDCD25] text-white font-semibold py-2 rounded-full w-full"
+        >
+          Login
+        </button>
+
+        <p className="text-sm mt-4">
+          Don’t have an account?{" "}
+          <span className="font-bold text-white">Register</span>
+        </p>
+      </form>
+    </div>
+  </div>
+)}
+
     </main>
   );
 }
