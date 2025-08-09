@@ -42,22 +42,28 @@ const Lumerpa = () => {
 
       <div className="flex px-4 py-6 gap-4">
         {/* Sidebar */}
-        <div className="w-1/4 pr-4">
-          <h2 className="font-semibold text-sm mb-3">Semua Hapita</h2>
-          <div className="space-y-2">
-            {categories.map((category, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedCategory(category)}
-                className={`w-full text-left px-4 py-2 text-sm rounded-lg 
-                  ${selectedCategory === category ? 'font-bold text-[#094C78]' : 'text-gray-700'}
-                  hover:bg-gray-200 transition-all`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+      <div className="w-1/4 pr-4">
+        <h2 className="font-semibold text-sm mb-3">Semua Lumerpa</h2>
+        <div className="space-y-2">
+          {categories.map((category, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                if (category === "Arias") {
+                  navigate("/lumerpa/arias");
+                } else {
+                  setSelectedCategory(category);
+                }
+              }}
+              className={`w-full text-left py-2 text-sm rounded-lg whitespace-normal break-words
+                ${selectedCategory === category ? 'font-bold text-[#094C78]' : 'text-gray-700'}
+                hover:bg-gray-200 transition-all`}
+            >
+              {category}
+            </button>
+          ))}
         </div>
+      </div>
 
         {/* Produk Grid */}
         <div className="w-3/4">

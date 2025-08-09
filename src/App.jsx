@@ -11,6 +11,8 @@ import PaymentGatewayPage from './pages/PaymentGatewayPage';
 import TrackOrder from './pages/TrackOrder';
 import ProductDetailArias from './pages/ProductDetailArias';
 import Login from './components/Login';
+import Arias from './pages/Arias';
+import Irish from './pages/Irish';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -30,7 +32,8 @@ function App() {
         <Route path="/payment-gateway" element={<PaymentGatewayPage />} />
         <Route path="/track-order" element={<TrackOrder />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/lumerpa/arias" element={<Arias />} />
+        <Route path="/hapita/irish" element={<Irish />} />
 
       </Routes>
     </BrowserRouter>

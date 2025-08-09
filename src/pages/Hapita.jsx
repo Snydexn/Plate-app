@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import TopBar from '../components/TopBar';
 import BrandAndBanner from '../components/BrandAndBanner';
 import BottomNavbar from '../components/BottomNavbar';
+import { useNavigate } from 'react-router-dom'; 
 
 const Hapita = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
   const products = [
     { id: 1, name: 'Alicia Dinner Plate 27cm', price: 'Rp 235.000', image: '/assets/hapita/1.png', category: 'Alicia' },
@@ -39,23 +41,30 @@ const Hapita = () => {
       <BrandAndBanner />
 
       <div className="flex px-4 py-6 gap-4">
-        {/* Sidebar kategori */}
-        <div className="w-1/4 pr-4">
-          <h2 className="font-semibold text-sm mb-3">Semua Hapita</h2>
-          <div className="space-y-2">
-            {categories.map((category, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedCategory(category)}
-                className={`w-full text-left px-4 py-2 text-sm rounded-lg 
-                  ${selectedCategory === category ? 'font-bold text-[#094C78]' : 'text-gray-700'}
-                  hover:bg-gray-200 transition-all`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+        {/* Sidebar */}
+      <div className="w-1/4 pr-4">
+        <h2 className="font-semibold text-sm mb-3">Semua Hapita</h2>
+        <div className="space-y-2">
+          {categories.map((category, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                if (category === "Irish") {
+                  navigate("/hapita/irish");
+                } else {
+                  setSelectedCategory(category);
+                }
+              }}
+              className={`w-full text-left py-2 text-sm rounded-lg whitespace-normal break-words
+                ${selectedCategory === category ? 'font-bold text-[#094C78]' : 'text-gray-700'}
+                hover:bg-gray-200 transition-all`}
+            >
+              {category}
+            </button>
+          ))}
         </div>
+      </div>
+
 
         {/* Produk */}
         <div className="w-3/4">
