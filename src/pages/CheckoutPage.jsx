@@ -6,18 +6,25 @@ export default function CheckoutPage() {
   const [quantities, setQuantities] = useState({});
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(null);
+
+  // 🔒 login modal
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("checkout")) || [];
-    setItems(saved);
+  const saved = JSON.parse(localStorage.getItem("checkout")) || [];
+  setItems(saved);
 
-    const initialQuantities = {};
-    saved.forEach((item) => {
-      initialQuantities[item.id] = item.quantity || 1;
-    });
-    setQuantities(initialQuantities);
-  }, []);
+  const initialQuantities = {};
+  saved.forEach((item) => {
+    initialQuantities[item.id] = item.quantity || 1;
+  });
+  setQuantities(initialQuantities);
+
+  // ✅ SELALU tampilkan modal login tiap kali halaman dibuka
+  setShowLoginModal(true);
+}, []);
 
   const handleQuantity = (id, delta) => {
     setQuantities((prev) => {
@@ -33,6 +40,22 @@ export default function CheckoutPage() {
       return total + qty * price;
     }, 0);
   };
+
+  // klik lanjut bayar (tetap cek login juga)
+  const onProceedPayment = () => {
+    const isLoggedIn = localStorage.getItem("hasLoggedIn") === "true";
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+    setShowPaymentModal(true);
+  };
+
+// sukses login dari modal
+const handleLoginSuccess = () => {
+  localStorage.setItem("hasLoggedIn", "true");
+  setShowLoginModal(false); 
+};
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F9F9]">
@@ -146,7 +169,7 @@ export default function CheckoutPage() {
               </p>
             </div>
             <button
-              onClick={() => setShowPaymentModal(true)}
+              onClick={onProceedPayment}
               className="bg-[#FDCD25] text-white font-bold text-sm px-6 py-3 rounded-2xl"
             >
               Lanjut Bayar
@@ -214,6 +237,28 @@ export default function CheckoutPage() {
               <button
                 className="bg-[#FDCD25] text-white font-bold px-5 py-2 rounded-xl text-sm"
                 onClick={() => {
+                  if (!selectedMethod) {
+                    alert("Pilih metode pembayaran dulu ya.");
+                    return;
+                  }
+
+                  const mapLabel = {
+                    gopay: "GoPay",
+                    bca: "BCA Virtual Account",
+                    mandiri: "Mandiri Virtual Account",
+                  };
+                  const mapNumber = {
+                    gopay: "0812-xxxx-xxxx",
+                    bca: "8888881234567890",
+                    mandiri: "888996182311312446",
+                  };
+
+                  const payload = {
+                    method: mapLabel[selectedMethod],
+                    vaNumber: mapNumber[selectedMethod],
+                  };
+                  localStorage.setItem("selectedMethod", JSON.stringify(payload));
+
                   setShowPaymentModal(false);
                   navigate("/payment-gateway");
                 }}
@@ -221,6 +266,54 @@ export default function CheckoutPage() {
                 Lanjut Bayar
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL LOGIN */}
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center">
+          <div className="bg-gradient-to-b from-[#1076BB] to-white rounded-3xl w-[90%] max-w-md text-center text-white relative px-6 py-8">
+            {/* ❌ kalau ditutup, keluar dari halaman checkout biar “wajib login” */}
+            <button
+              className="absolute top-2 right-4 bg-black text-white px-2 py-1 rounded-full text-sm"
+              onClick={() => navigate(-1)}
+            >
+              X
+            </button>
+
+            <h2 className="text-3xl font-bold mb-6">Masuk</h2>
+            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full border-b border-white bg-transparent py-2 px-1 placeholder-white text-white focus:outline-none"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full border-b border-white bg-transparent py-2 px-1 placeholder-white text-white focus:outline-none"
+              />
+              <div className="flex justify-between items-center text-xs mt-2 mb-4 text-white">
+                <label className="flex items-center gap-1">
+                  <input type="checkbox" className="accent-white" />
+                  Remember me
+                </label>
+                <span className="underline">Forget Password?</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleLoginSuccess}
+                className="bg-[#FDCD25] text-white font-semibold py-2 rounded-full w-full"
+              >
+                Login
+              </button>
+
+              <p className="text-sm mt-4">
+                Don’t have an account? <span className="font-bold text-white">Register</span>
+              </p>
+            </form>
           </div>
         </div>
       )}
