@@ -12,8 +12,6 @@ export default function HomePage() {
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("wishlist")) || [];
     setWishlist(saved);
-
-    // ✅ Popup login hanya muncul sekali
     const hasLoggedIn = localStorage.getItem("hasLoggedIn") === "true";
     if (!hasLoggedIn) setShowLoginModal(true);
   }, []);
@@ -49,7 +47,9 @@ export default function HomePage() {
     { id: 10, name: "Dinner Plate 10” Irish Green", price: "Rp 120.000", image: "/assets/produkhome/produk10.png" },
   ];
 
-  // Toggle wishlist
+  // === NEW: navigate to promotional
+  const handleBannerClick = () => navigate("/promotional");
+
   const toggleWishlist = (product) => {
     const existing = JSON.parse(localStorage.getItem("wishlist")) || [];
     const isExists = existing.some((item) => item.id === product.id);
@@ -61,7 +61,6 @@ export default function HomePage() {
   };
 
   const isInWishlist = (productId) => wishlist.some((item) => item.id === productId);
-
   const handleClick = (productId) => {
     if (productId === 1) navigate("/produk/alicia");
   };
@@ -71,27 +70,52 @@ export default function HomePage() {
       <TopBar />
       <BrandAndBanner />
 
-      {/* Catalog Banners */}
+      {/* Catalog Banners (click -> /promotional) */}
       <div className="grid grid-cols-2 gap-3 p-2">
         {bannerCatalogs.map((banner, idx) => (
-          <img key={idx} src={banner.src} alt={banner.alt} className="rounded-xl w-full h-auto object-cover" />
+          <button
+            key={idx}
+            type="button"
+            onClick={handleBannerClick}
+            className="rounded-xl overflow-hidden focus:outline-none"
+            aria-label={`Buka halaman promotional dari ${banner.alt}`}
+          >
+            <img src={banner.src} alt={banner.alt} className="w-full h-auto object-cover" />
+          </button>
         ))}
       </div>
 
-      {/* Promo Banners */}
+      {/* Promo Banners (click -> /promotional) */}
       <div className="grid grid-cols-2 gap-3 p-2">
         {bannerPromos.map((banner, idx) => (
-          <img key={idx} src={banner.src} alt={banner.alt} className="rounded-xl w-full h-auto object-cover" />
+          <button
+            key={idx}
+            type="button"
+            onClick={handleBannerClick}
+            className="rounded-xl overflow-hidden focus:outline-none"
+            aria-label={`Buka halaman promotional dari ${banner.alt}`}
+          >
+            <img src={banner.src} alt={banner.alt} className="w-full h-auto object-cover" />
+          </button>
         ))}
       </div>
 
       {/* Inspirasi Untukmu */}
       <section className="pt-4 pb-6 text-black">
-        <h2 className="px-4 font-semibold text-sm mb-3">Inspirasi Untukmu</h2>
+        <h2 className="font-semibold text-sm mb-3">Inspirasi Untukmu</h2>
         <div className="flex gap-2 px-4 justify-between">
           {inspirations.map((src, idx) => (
-            <div key={idx} className="rounded-xl overflow-hidden bg-white" style={{ width: "18%", aspectRatio: "3 / 4" }}>
-              <img src={src} alt={`inspirasi-${idx}`} className="w-full h-full object-cover" />
+            <div
+              key={idx}
+              onClick={() => navigate("/inspirasi")}
+              className="rounded-xl overflow-hidden bg-white cursor-pointer hover:opacity-90 transition"
+              style={{ width: "18%", aspectRatio: "3 / 4" }}
+            >
+              <img
+                src={src}
+                alt={`inspirasi-${idx}`}
+                className="w-full h-full object-cover"
+              />
             </div>
           ))}
         </div>
@@ -126,10 +150,8 @@ export default function HomePage() {
                 </svg>
               </div>
 
-              {/* Product Image */}
               <img src={product.image} alt={product.name} className="w-full h-[140px] object-contain bg-white" />
 
-              {/* Product Detail */}
               <div className="bg-[#094C78] text-white p-3 rounded-b-2xl min-h-[80px] relative">
                 <div className="text-xs pr-8">
                   <p>{product.name}</p>
@@ -146,16 +168,13 @@ export default function HomePage() {
 
       <BottomNavbar />
 
-      {/* MODAL LOGIN (muncul sekali saja) */}
+      {/* Modal Login */}
       {showLoginModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-gradient-to-b from-[#1076BB] to-white rounded-3xl w-[90%] max-w-md text-center text-white relative px-6 py-8">
             <button
               className="absolute top-2 right-4 bg-black text-white px-2 py-1 rounded-full text-sm"
-              onClick={() => {
-                // kalau user menutup tanpa login, jangan set flag
-                setShowLoginModal(false);
-              }}
+              onClick={() => setShowLoginModal(false)}
             >
               X
             </button>
@@ -182,7 +201,6 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => {
-                  // ✅ tandai sudah login agar popup tidak muncul lagi
                   localStorage.setItem("hasLoggedIn", "true");
                   setShowLoginModal(false);
                 }}

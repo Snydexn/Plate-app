@@ -4,12 +4,12 @@ import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
 import { useNavigate } from "react-router-dom";
 
-const Irish = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Irish");
+const Coupe = () => {
+  const [selectedCategory, setSelectedCategory] = useState("Coupe");
   const navigate = useNavigate();
 
   const categories = [
-    'Alicia', 'Clara', 'Serena', 'Dark Gobi', 'Fusion Grey', 'Pedra Rocha', 'Rustic', 'Atelier', 'Irish', 'Hikari',
+    'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials',
   ];
 
   const products = [
@@ -32,7 +32,7 @@ const Irish = () => {
 
   ];
 
-  const filtered = selectedCategory && selectedCategory !== "Semua Hapita"
+  const filtered = selectedCategory && selectedCategory !== "Semua Hospitality"
     ? products
     : products;
 
@@ -46,20 +46,20 @@ const Irish = () => {
         <div className="w-1/4 pr-4">
         <h2 
             className="text-sm mb-3 cursor-pointer rounded-lg hover:bg-gray-200 transition-all`"
-            onClick={() => navigate("/Hapita")}
+            onClick={() => navigate("/hospitality")}
         >
-            Semua Hapita
+            Semua Hospitality
         </h2>
           <div className="space-y-2">
             {categories.map((category, idx) => (
               <button
                 key={idx}
                 onClick={() => {
-                  if (category === "Semua Hapita") {
-                    navigate("/hapita");
+                  if (category === "Semua Hospitality") {
+                    navigate("/hospitality");
                     setSelectedCategory(null);
-                  } else if (category === "Irish") {
-                    navigate("/hapita/irish");
+                  } else if (category === "Coupe") {
+                    navigate("/hospitality/coupe");
                   } else {
                     setSelectedCategory(category);
                   }
@@ -78,13 +78,13 @@ const Irish = () => {
         <div className="w-3/4">
           <div className="relative mb-4">
             <img
-              src="/assets/hapita/banner.png"
-              alt="Banner Irish"
+              src="/assets/banners/HSI.png"
+              alt="Banner Arturo"
               className="w-full h-[100px] object-cover rounded-lg"
             />
           </div>
 
-          <h2 className="text-xl mb-2">Semua Hapita</h2>
+          <h2 className="text-xl mb-2">Semua Hospitality</h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filtered.map((product) => (
@@ -118,4 +118,4 @@ const Irish = () => {
   );
 };
 
-export default Irish;
+export default Coupe;

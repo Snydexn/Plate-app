@@ -45,7 +45,7 @@ const Arias = () => {
       <TopBar />
       <BrandAndBanner />
 
-      <div className="flex px-4 py-6 gap-4">
+      <div className="flex px-4 pb-35 py-6 gap-4">
         <div className="w-1/4 pr-4">
         <h2 
             className="text-sm mb-3 cursor-pointer rounded-lg hover:bg-gray-200 transition-all`"

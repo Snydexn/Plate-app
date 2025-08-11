@@ -40,7 +40,7 @@ const Lumerpa = () => {
       <TopBar />
       <BrandAndBanner />
 
-      <div className="flex px-4 py-6 gap-4">
+      <div className="flex px-4 pb-35 py-6 gap-4">
         {/* Sidebar */}
       <div className="w-1/4 pr-4">
         <h2 className="font-semibold text-sm mb-3">Semua Lumerpa</h2>

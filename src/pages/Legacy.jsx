@@ -4,7 +4,7 @@ import BrandAndBanner from '../components/BrandAndBanner';
 import BottomNavbar from '../components/BottomNavbar';
 import { useNavigate } from 'react-router-dom'; 
 
-const Hapita = () => {
+const Legacy = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const Hapita = () => {
   ];
 
   const categories = [
-    'Alicia', 'Clara', 'Serena', 'Dark Gobi', 'Fusion Grey', 'Pedra Rocha', 'Rustic', 'Atelier', 'Irish', 'Hikari',
+    'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials', 'Phoenix', 'Melbourne', 'Arturo',
   ];
 
   const filteredProducts = selectedCategory
@@ -43,14 +43,14 @@ const Hapita = () => {
       <div className="flex px-4 pb-35 py-6 gap-4">
         {/* Sidebar */}
       <div className="w-1/4 pr-4">
-        <h2 className="font-semibold text-sm mb-3">Semua Hapita</h2>
+        <h2 className="font-semibold text-sm mb-3">Semua Legacy</h2>
         <div className="space-y-2">
           {categories.map((category, idx) => (
             <button
               key={idx}
               onClick={() => {
-                if (category === "Irish") {
-                  navigate("/hapita/irish");
+                if (category === "Arturo") {
+                  navigate("/legacy/arturo");
                 } else {
                   setSelectedCategory(category);
                 }
@@ -70,12 +70,12 @@ const Hapita = () => {
         <div className="w-3/4">
           <div className="relative mb-4">
             <img
-              src="/assets/hapita/banner.png"
+              src="/assets/banners/Arturo.png"
               alt="Banner"
               className="w-full h-[100px] object-cover rounded-lg"
             />
           </div>
-          <h2 className="text-xl mb-2">Semua Hapita</h2>
+          <h2 className="text-xl mb-2">Semua Legacy</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredProducts.map((product) => (
               <div
@@ -110,4 +110,4 @@ const Hapita = () => {
   );
 };
 
-export default Hapita;
+export default Legacy;

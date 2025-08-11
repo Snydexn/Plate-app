@@ -5,9 +5,10 @@ export default function BrandAndBanner() {
   const brandLogos = [
     { name: "Hapita", src: "/assets/brands/Hapita.png", link: "/hapita" },
     { name: "Lumerpa", src: "/assets/brands/Lumerpa.png", link: "/lumerpa" },
-    { name: "Skitchen", src: "/assets/brands/Skitchen.png", link: "/skitchen" },
-    { name: "Bima", src: "/assets/brands/Bima.png", link: "/bima" },
-    { name: "HSI", src: "/assets/brands/HSI Hospitality.png", link: "/hsi" },
+    { name: "Legacy", src: "/assets/brands/Legacy.png", link: "/legacy" },
+    { name: "HSI", src: "/assets/brands/HSI Hospitality.png", link: "/hospitality" },
+    { name: "Bima", src: "/assets/brands/Boomi.png", link: "/boomi" },
+    
   ];
 
   return (

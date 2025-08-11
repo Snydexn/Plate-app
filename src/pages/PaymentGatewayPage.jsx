@@ -106,7 +106,7 @@ export default function PaymentGatewayPage() {
         <button className="w-full border border-[#FDCD25] bg-[#D9D9D9] text-[#FDCD25] font-semibold py-2 rounded-xl">
           Ganti Metode Pembayaran
         </button>
-        <button className="w-full border border-[#E02525] text-[#E02525] font-semibold py-2 rounded-xl bg-[#D9D9D9]">
+        <button className="w-full border border-[##FF0000] bg-[#FF0000] text-white font-semibold py-2 rounded-xl">
           Batalkan
         </button>
       </div>

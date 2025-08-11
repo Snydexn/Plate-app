@@ -13,6 +13,14 @@ import ProductDetailArias from './pages/ProductDetailArias';
 import Login from './components/Login';
 import Arias from './pages/Arias';
 import Irish from './pages/Irish';
+import Promotional from './pages/Promotional';
+import Inspirasi from './pages/Inspirasi';
+import Legacy from './pages/Legacy';
+import Arturo from './pages/Arturo';
+import Hospitality from './pages/Hospitality';
+import Coupe from './pages/Coupe';
+import Boomi from './pages/Boomi';
+import Essentials from './pages/Essentials';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -34,6 +42,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/lumerpa/arias" element={<Arias />} />
         <Route path="/hapita/irish" element={<Irish />} />
+        <Route path="/promotional" element={<Promotional />} />
+        <Route path="/inspirasi" element={<Inspirasi />} />
+        <Route path="/legacy" element={<Legacy />} />
+        <Route path="/legacy/arturo" element={<Arturo />} />
+        <Route path="/hospitality" element={<Hospitality />} />
+        <Route path="/hospitality/coupe" element={<Coupe />} />
+        <Route path="/boomi" element={<Boomi />} />
+        <Route path="/boomi/essentials" element={<Essentials />} />
 
       </Routes>
     </BrowserRouter>
