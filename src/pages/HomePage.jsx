@@ -62,8 +62,13 @@ export default function HomePage() {
 
   const isInWishlist = (productId) => wishlist.some((item) => item.id === productId);
   const handleClick = (productId) => {
-    if (productId === 1) navigate("/produk/alicia");
+    if (productId === 1) {
+      navigate("/produk/alicia");
+    } else if ([2, 3, 4, 5].includes(productId)) {
+      navigate("/hapita");
+    }
   };
+
 
   return (
     <main className="min-h-screen text-black pb-36 relative">
@@ -102,7 +107,7 @@ export default function HomePage() {
 
       {/* Inspirasi Untukmu */}
       <section className="pt-4 pb-6 text-black">
-        <h2 className="font-semibold text-sm mb-3">Inspirasi Untukmu</h2>
+        <h2 className="px-4 font-semibold text-sm mb-3">Inspirasi Untukmu</h2>
         <div className="flex gap-2 px-4 justify-between">
           {inspirations.map((src, idx) => (
             <div

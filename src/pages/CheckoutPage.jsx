@@ -7,24 +7,23 @@ export default function CheckoutPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(null);
 
-  // 🔒 login modal
+  // Modal login
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-  const saved = JSON.parse(localStorage.getItem("checkout")) || [];
-  setItems(saved);
+    const saved = JSON.parse(localStorage.getItem("checkout")) || [];
+    setItems(saved);
 
-  const initialQuantities = {};
-  saved.forEach((item) => {
-    initialQuantities[item.id] = item.quantity || 1;
-  });
-  setQuantities(initialQuantities);
+    const initialQuantities = {};
+    saved.forEach((item) => {
+      initialQuantities[item.id] = item.quantity || 1;
+    });
+    setQuantities(initialQuantities);
 
-  // ✅ SELALU tampilkan modal login tiap kali halaman dibuka
-  setShowLoginModal(true);
-}, []);
+    // ❌ Tidak memunculkan login saat membuka halaman
+  }, []);
 
   const handleQuantity = (id, delta) => {
     setQuantities((prev) => {
@@ -36,36 +35,30 @@ export default function CheckoutPage() {
   const getTotal = () => {
     return items.reduce((total, item) => {
       const qty = quantities[item.id] || 1;
+      // item.price di-save sebagai string "Rp 235.000"
       const price = parseInt(item.price.replace(/[^\d]/g, ""));
       return total + qty * price;
     }, 0);
   };
 
-  // klik lanjut bayar (tetap cek login juga)
+  // 🔐 Selalu minta login dulu ketika klik Lanjut Bayar
   const onProceedPayment = () => {
-    const isLoggedIn = localStorage.getItem("hasLoggedIn") === "true";
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-    setShowPaymentModal(true);
+    setShowPaymentModal(false);
+    setShowLoginModal(true);
   };
 
-// sukses login dari modal
-const handleLoginSuccess = () => {
-  localStorage.setItem("hasLoggedIn", "true");
-  setShowLoginModal(false); 
-};
+  // ✅ Setelah login, langsung buka modal pembayaran
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    setShowPaymentModal(true);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F9F9]">
       {/* Header Checkout */}
       <div className="bg-[#0C72B0] px-4 pt-6 pb-4">
         <div className="text-white text-lg font-medium flex items-center gap-3">
-          <button
-            onClick={() => window.history.back()}
-            className="text-2xl font-bold"
-          >
+          <button onClick={() => window.history.back()} className="text-2xl font-bold">
             &lt;
           </button>
           <span>Keranjang</span>
@@ -117,12 +110,8 @@ const handleLoginSuccess = () => {
                 className="w-16 h-16 object-contain rounded-xl"
               />
               <div className="flex-1 px-4">
-                <p className="text-sm font-semibold text-black leading-snug">
-                  {item.name}
-                </p>
-                <p className="text-[#F5C000] font-semibold text-sm mt-1">
-                  {item.price}
-                </p>
+                <p className="text-sm font-semibold text-black leading-snug">{item.name}</p>
+                <p className="text-[#F5C000] font-semibold text-sm mt-1">{item.price}</p>
               </div>
               <div className="flex items-center gap-2 bg-[#E3E3E3] px-3 py-1 rounded-full">
                 <button
@@ -202,16 +191,10 @@ const handleLoginSuccess = () => {
                   key={method.id}
                   onClick={() => setSelectedMethod(method.id)}
                   className={`flex items-center gap-3 p-2 rounded-lg border cursor-pointer ${
-                    selectedMethod === method.id
-                      ? "border-[#0C72B0]"
-                      : "border-gray-300"
+                    selectedMethod === method.id ? "border-[#0C72B0]" : "border-gray-300"
                   }`}
                 >
-                  <img
-                    src={method.icon}
-                    alt={method.name}
-                    className="w-8 h-8 object-contain"
-                  />
+                  <img src={method.icon} alt={method.name} className="w-8 h-8 object-contain" />
                   <span className="text-sm font-medium">{method.name}</span>
                 </div>
               ))}
@@ -270,14 +253,14 @@ const handleLoginSuccess = () => {
         </div>
       )}
 
-      {/* MODAL LOGIN */}
+      {/* Modal Login */}
       {showLoginModal && (
         <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center">
           <div className="bg-gradient-to-b from-[#1076BB] to-white rounded-3xl w-[90%] max-w-md text-center text-white relative px-6 py-8">
-            {/* ❌ kalau ditutup, keluar dari halaman checkout biar “wajib login” */}
+            {/* X: tutup modal saja */}
             <button
               className="absolute top-2 right-4 bg-black text-white px-2 py-1 rounded-full text-sm"
-              onClick={() => navigate(-1)}
+              onClick={() => setShowLoginModal(false)}
             >
               X
             </button>
