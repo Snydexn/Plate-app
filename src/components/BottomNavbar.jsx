@@ -23,7 +23,7 @@ export default function BottomNavbar() {
           { name: "Kategori", icon: "/assets/nav/category.png", link: "/category" },
           { name: "Kisah Keramik", icon: "/assets/nav/design.png", link: "/kisah-keramik" },
           { name: "keranjang", icon: "/assets/nav/cart.png", link: "/cart" },
-          { name: "Akun", icon: "/assets/nav/account.png", link: "/account" }].map((item, index) => (
+          { name: "Akun", icon: "/assets/nav/account.png", link: "/akun" }].map((item, index) => (
           <Link key={index} to={item.link} className="flex flex-col items-center text-[11px] font-medium text-black text-center w-[20%]">
             <img
               src={item.icon}

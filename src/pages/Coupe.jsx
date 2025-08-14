@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "../components/TopBar";
 import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
 import { useNavigate } from "react-router-dom";
+import { getProducts } from "../store/products";
 
 const Coupe = () => {
   const [selectedCategory, setSelectedCategory] = useState("Coupe");
@@ -12,7 +13,7 @@ const Coupe = () => {
     'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials',
   ];
 
-  const products = [
+  const staticProducts = [
     { id: 1, name: "Irish Dinner Plate 27cm", price: "Rp 235.000", image: "/assets/hapitairish/1.png" },
     { id: 2, name: "Irish Green Pasta Bowl", price: "Rp 235.000", image: "/assets/hapitairish/2.png" },
     { id: 3, name: "Reactive Green Rice Bowl", price: "Rp 235.000", image: "/assets/hapitairish/3.png" },
@@ -31,6 +32,10 @@ const Coupe = () => {
     { id: 16, name: "Graphite Cappuccino Cup & Saucer", price: "Rp 235.000", image: "/assets/hapitairish/16.png" },
 
   ];
+
+  // Merge static with dynamic products
+  const dynamicProducts = getProducts('Hospitality', selectedCategory);
+  const products = [...staticProducts, ...dynamicProducts];
 
   const filtered = selectedCategory && selectedCategory !== "Semua Hospitality"
     ? products

@@ -22,6 +22,8 @@ import Coupe from './pages/Coupe';
 import Boomi from './pages/Boomi';
 import Essentials from './pages/Essentials';
 import KisahKeramik from './pages/KisahKeramik';
+//newly added (from yours truly)
+import Akun from './pages/Akun';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -52,7 +54,7 @@ function App() {
         <Route path="/boomi" element={<Boomi />} />
         <Route path="/boomi/essentials" element={<Essentials />} />
         <Route path="/kisah-keramik" element={<KisahKeramik />} />
-
+        <Route path="/akun" element={<Akun />} />
 
       </Routes>
     </BrowserRouter>

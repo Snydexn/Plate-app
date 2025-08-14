@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import BrandAndBanner from '../components/BrandAndBanner';
 import BottomNavbar from '../components/BottomNavbar';
 import { useNavigate } from 'react-router-dom'; 
+import { getProducts } from '../store/products';
 
 const Boomi = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -31,9 +32,11 @@ const Boomi = () => {
     'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials',
   ];
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+  const dynamicProducts = getProducts('Boomi', selectedCategory);
+    const mergedProducts = [...products, ...dynamicProducts];
+    const filteredProducts = selectedCategory
+      ? mergedProducts.filter((product) => (product.category || '') === selectedCategory)
+      : mergedProducts;
 
   return (
     <div>
