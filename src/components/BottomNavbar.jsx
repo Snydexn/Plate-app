@@ -20,10 +20,10 @@ export default function BottomNavbar() {
       {/* Navigation Items */}
       <div className="flex justify-between items-center px-4 pt-3 pb-2 bg-white">
         {[{ name: "Halaman Utama", icon: "/assets/nav/home.png", link: "/" }, 
-          { name: "Kategori", icon: "/assets/nav/category.png", link: "/category" },
+          { name: "Kategori", icon: "/assets/nav/category.png", link: "/hapita" },
           { name: "Kisah Keramik", icon: "/assets/nav/design.png", link: "/kisah-keramik" },
-          { name: "keranjang", icon: "/assets/nav/cart.png", link: "/cart" },
-          { name: "Akun", icon: "/assets/nav/account.png", link: "/account" }].map((item, index) => (
+          { name: "keranjang", icon: "/assets/nav/cart.png", link: "/wishlist" },
+          { name: "Akun", icon: "/assets/nav/account.png", link: "/akun" }].map((item, index) => (
           <Link key={index} to={item.link} className="flex flex-col items-center text-[11px] font-medium text-black text-center w-[20%]">
             <img
               src={item.icon}

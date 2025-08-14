@@ -1,4 +1,5 @@
 import React from "react";
+import MotionFadeIn from './MotionFadeIn';
 import { Link } from "react-router-dom"; // Import Link dari react-router-dom
 
 export default function BrandAndBanner() {
@@ -29,8 +30,7 @@ export default function BrandAndBanner() {
                 <img
                   src={brand.src}
                   alt={brand.name}
-                  className="w-[70%] h-[70%] object-contain"
-                />
+                  className="w-[70%] h-[70%] object-contain transition-transform duration-200 hover:scale-105"                />
               </div>
             </Link>
           </div>

@@ -3,6 +3,9 @@ import TopBar from "../components/TopBar";
 import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
 import { useNavigate } from "react-router-dom";
+import WishlistButton from '../components/WishlistButton';
+import MotionFadeIn from '../components/MotionFadeIn'; // (added where needed)
+
 
 const Arturo = () => {
   const [selectedCategory, setSelectedCategory] = useState("Arturo");
@@ -90,8 +93,7 @@ const Arturo = () => {
             {filtered.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
-              >
+                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"              >
                 <div className="aspect-[4/3] w-full bg-white overflow-hidden rounded-t-2xl">
                   <img
                     src={product.image}
@@ -103,9 +105,7 @@ const Arturo = () => {
                 <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
                   <p className="text-[10px] leading-tight">{product.name}</p>
                   <p className="text-[#FDCD25] text-[12px] mt-1">{product.price}</p>
-                  <button className="absolute bottom-2 right-2 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
-                    +
-                  </button>
+                  <WishlistButton product={product} className="absolute bottom-3 bg-yellow-300 right-3" />
                 </div>
               </div>
             ))}

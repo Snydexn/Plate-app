@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "../components/TopBar";
 import BrandAndBanner from "../components/BrandAndBanner";
 import BottomNavbar from "../components/BottomNavbar";
 import { useNavigate } from "react-router-dom";
+import { getProducts } from "../store/products";
+import WishlistButton from '../components/WishlistButton';
+import MotionFadeIn from '../components/MotionFadeIn'; // (added where needed)
+
 
 const Coupe = () => {
   const [selectedCategory, setSelectedCategory] = useState("Coupe");
@@ -12,7 +16,7 @@ const Coupe = () => {
     'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials',
   ];
 
-  const products = [
+  const staticProducts = [
     { id: 1, name: "Irish Dinner Plate 27cm", price: "Rp 235.000", image: "/assets/hapitairish/1.png" },
     { id: 2, name: "Irish Green Pasta Bowl", price: "Rp 235.000", image: "/assets/hapitairish/2.png" },
     { id: 3, name: "Reactive Green Rice Bowl", price: "Rp 235.000", image: "/assets/hapitairish/3.png" },
@@ -31,6 +35,10 @@ const Coupe = () => {
     { id: 16, name: "Graphite Cappuccino Cup & Saucer", price: "Rp 235.000", image: "/assets/hapitairish/16.png" },
 
   ];
+
+  // Merge static with dynamic products
+  const dynamicProducts = getProducts('Hospitality', selectedCategory);
+  const products = [...staticProducts, ...dynamicProducts];
 
   const filtered = selectedCategory && selectedCategory !== "Semua Hospitality"
     ? products
@@ -90,8 +98,7 @@ const Coupe = () => {
             {filtered.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
-              >
+                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"              >
                 <div className="aspect-[4/3] w-full bg-white overflow-hidden rounded-t-2xl">
                   <img
                     src={product.image}
@@ -103,9 +110,7 @@ const Coupe = () => {
                 <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
                   <p className="text-[10px] leading-tight">{product.name}</p>
                   <p className="text-[#FDCD25] text-[12px] mt-1">{product.price}</p>
-                  <button className="absolute bottom-2 right-2 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
-                    +
-                  </button>
+                  <WishlistButton product={product} className="absolute bottom-3 bg-yellow-300 right-3" />
                 </div>
               </div>
             ))}

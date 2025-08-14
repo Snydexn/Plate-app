@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import TopBar from '../components/TopBar';
-import BrandAndBanner from '../components/BrandAndBanner';
-import BottomNavbar from '../components/BottomNavbar';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState, useMemo } from "react";
+import TopBar from "../components/TopBar";
+import BrandAndBanner from "../components/BrandAndBanner";
+import BottomNavbar from "../components/BottomNavbar";
+import { useNavigate } from "react-router-dom";
+import { getProducts } from "../store/products";
+import WishlistButton from '../components/WishlistButton';
+import MotionFadeIn from '../components/MotionFadeIn'; // (added where needed)
+
+
+const SECTION = "Hospitality";
 
 const Hospitality = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -31,9 +37,20 @@ const Hospitality = () => {
     'Rim', 'Coupe', 'Presentation', 'Rectangular', 'Beverages', 'Essentials',
   ];
 
+  const dynamicProducts = useMemo(
+    () => getProducts(SECTION, selectedCategory),
+    [selectedCategory]
+  );
+
+  // Gabungkan static + dynamic
+  const mergedProducts = [...products, ...dynamicProducts];
+
+  // === GANTI BAGIAN INI (filteredProducts) ===
   const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+    ? mergedProducts.filter(
+        (product) => (product.category || "") === selectedCategory
+      )
+    : mergedProducts;
 
   return (
     <div>
@@ -42,29 +59,32 @@ const Hospitality = () => {
 
       <div className="flex px-4 pb-35 py-6 gap-4">
         {/* Sidebar */}
-      <div className="w-1/4 pr-4">
-        <h2 className="font-semibold text-sm mb-3">Semua Hospitality</h2>
-        <div className="space-y-2">
-          {categories.map((category, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                if (category === "Coupe") {
-                  navigate("/hospitality/coupe");
-                } else {
-                  setSelectedCategory(category);
-                }
-              }}
-              className={`w-full text-left py-2 text-sm rounded-lg whitespace-normal break-words
-                ${selectedCategory === category ? 'font-bold text-[#094C78]' : 'text-gray-700'}
-                hover:bg-gray-200 transition-all`}
-            >
-              {category}
-            </button>
-          ))}
+        <div className="w-1/4 pr-4">
+          <h2 className="font-semibold text-sm mb-3">Semua Hospitality</h2>
+          <div className="space-y-2">
+            {categories.map((category, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  if (category === "Coupe") {
+                    navigate("/hospitality/coupe");
+                  } else {
+                    setSelectedCategory(category);
+                  }
+                }}
+                className={`w-full text-left py-2 text-sm rounded-lg whitespace-normal break-words
+                  ${
+                    selectedCategory === category
+                      ? "font-bold text-[#094C78]"
+                      : "text-gray-700"
+                  }
+                  hover:bg-gray-200 transition-all`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-
 
         {/* Produk */}
         <div className="w-3/4">
@@ -80,8 +100,7 @@ const Hospitality = () => {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
-              >
+                className="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"              >
                 {/* Gambar */}
                 <div className="aspect-[4/3] w-full bg-white overflow-hidden rounded-t-2xl">
                   <img
@@ -94,10 +113,10 @@ const Hospitality = () => {
                 {/* Detail Produk */}
                 <div className="bg-[#094C78] text-white p-2 rounded-b-2xl flex-1 relative">
                   <p className="text-[10px] leading-tight">{product.name}</p>
-                  <p className="text-[#FDCD25] text-[12px] mt-1">{product.price}</p>
-                  <button className="absolute bottom-2 right-2 bg-yellow-300 text-[#01497c] w-6 h-6 rounded-full flex items-center justify-center text-lg font-bold leading-none">
-                    +
-                  </button>
+                  <p className="text-[#FDCD25] text-[12px] mt-1">
+                    {product.price}
+                  </p>
+                  <WishlistButton product={product} className="absolute bottom-3 bg-yellow-300 right-3" />
                 </div>
               </div>
             ))}
