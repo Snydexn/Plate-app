@@ -14,12 +14,33 @@ export default function KisahKeramik() {
         {/* Judul halaman */}
         <h1 className="text-lg font-semibold mt-3 mb-3">Kisah Keramik</h1>
         <article className="rounded-2xl ring-2 ring-[#0A68A6] bg-white p-3 shadow-sm">
-          <div className="rounded-xl bg-[#0A68A6] w-full aspect-[4/3] mb-3" />
-          <h2 className="text-base font-semibold mb-2">
-            Pengrajin keramik di Nusantara
-          </h2>
-          <p className="text-sm text-gray-800 leading-6">{lorem}{lorem} {lorem}</p>
-        </article>
+        <img
+          src="/assets/kisahkeramik.png"
+          alt="Kisah Keramik"
+          className="rounded-xl w-full aspect-[4/3] object-cover mb-3"
+        />
+        <h2 className="text-base font-semibold mb-2">
+          Pengrajin keramik di Nusantara
+        </h2>
+
+        <p className="text-[15px] text-black leading-6 text-justify">
+          Keramik di Nusantara memiliki jejak panjang yang membentang sejak ribuan tahun lalu.
+          Bukti arkeologis menunjukkan bahwa masyarakat kepulauan Indonesia telah membuat
+          dan menggunakan keramik sejak masa Neolitikum (sekitar 2500–1500 SM).
+        </p>
+
+        <p className="text-[15px] text-black leading-6 mb-1 text-justify">
+          Ketika arus perdagangan mulai membawa perahu-perahu asing ke pelabuhan Nusantara,
+          warna sejarah keramik berubah. Sekitar abad ke-4, pedagang dari India, Cina, dan
+          Timur Tengah datang, membawa keramik glasir mengilap, porselen putih, dan tempayan
+          bergambar naga atau bunga peony. Barang-barang ini bukan hanya benda pakai,
+          tetapi juga simbol kemewahan yang dipajang di istana Sriwijaya atau Majapahit.
+          Di Trowulan, bekas ibu kota Majapahit, hingga kini ditemukan pecahan keramik dari
+          Dinasti Tang, Song, Yuan, dan Ming—bukti bahwa keramik telah menjadi bagian dari
+          diplomasi, perdagangan, dan budaya.
+        </p>
+      </article>
+
         <div className="h-5" />
       </main>
 
