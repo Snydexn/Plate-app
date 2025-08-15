@@ -39,6 +39,19 @@ export default function KisahKeramik() {
           Dinasti Tang, Song, Yuan, dan Ming—bukti bahwa keramik telah menjadi bagian dari
           diplomasi, perdagangan, dan budaya.
         </p>
+
+        <p className="text-[15px] text-black leading-6 mb-1 text-justify">
+          Pengrajin lokal pun mulai meniru bentuk, teknik, dan motif keramik asing, memadukannya dengan pola lokal seperti parang, kawung, dan sulur daun.
+Dari masa itu lahirlah sentra-sentra keramik yang masih bertahan hingga kini. Kasongan di Yogyakarta menjadi pusat gerabah hias yang terkenal, lahir dari tradisi turun-temurun.
+        </p>
+
+           <p className="text-[15px] text-black leading-6 mb-1 text-justify">
+          Plered di Purwakarta dikenal dengan tempayan besar yang dulu menjadi wadah penyimpanan air dan beras. Di Lombok, pengrajin tetap setia pada teknik bakar gosok yang memberikan warna hitam alami nan eksotis. Klampok di Banjarnegara berkembang pesat di masa kolonial Belanda, memproduksi keramik untuk kebutuhan rumah tangga dan perhotelan. 
+           </p>
+
+         <p className="text-[15px] text-black leading-6 mb-1 text-justify">
+          Memasuki abad ke-20 dan pasca kemerdekaan, industri keramik di Nusantara berkembang pesat. Pabrik-pabrik modern memproduksi stoneware, fine china, dan porselen untuk kebutuhan domestik dan ekspor. Sementara itu, para pengrajin tradisional mulai memadukan warisan lama dengan desain kontemporer, melahirkan karya yang diminati kolektor mancanegara. Dari piring sederhana hingga guci hias berharga tinggi, keramik Nusantara kini menjadi bukti bahwa dari segumpal tanah, lahirlah karya yang tak lekang oleh waktu.
+         </p>
       </article>
 
         <div className="h-5" />
